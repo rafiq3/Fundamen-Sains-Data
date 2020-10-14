@@ -1,0 +1,7 @@
+table(dataCredit$Gender)
+table(dataCredit$Student)
+table(dataCredit$Married)
+library(lsr)
+modeOf(dataCredit$Gender)
+modeOf(dataCredit$Student)
+modeOf(dataCredit$Married)
