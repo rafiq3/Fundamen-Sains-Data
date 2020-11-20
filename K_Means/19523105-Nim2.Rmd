@@ -1,0 +1,66 @@
+---
+title: "Clustering a Dataset with K-Means"
+output:
+  html_document:
+    df_print: paged
+---
+ 
+
+```{r}
+library(readr)
+library(tidyverse)
+library(cluster)
+library(factoextra)
+Wholesale_customers_data <- read_csv("Wholesale_customers_data.csv")
+data <- Wholesale_customers_data
+```
+
+```{r}
+summary(is.na(data))
+```
+
+
+```{r}
+k2 <- kmeans(data, centers = 2, nstart = 25)
+str(k2)
+```
+
+```{r}
+k2
+```
+
+```{r}
+fviz_cluster(k2, data = data)
+```
+
+```{r}
+k3 <- kmeans(data, centers = 3, nstart = 25)
+k4 <- kmeans(data, centers = 4, nstart = 25)
+k5 <- kmeans(data, centers = 5, nstart = 25)
+
+# plots to compare
+p1 <- fviz_cluster(k2, geom = "point", data = data[-1]) + ggtitle("k = 2")
+p2 <- fviz_cluster(k3, geom = "point",  data = data[-1]) + ggtitle("k = 3")
+p3 <- fviz_cluster(k4, geom = "point",  data = data[-1]) + ggtitle("k = 4")
+p4 <- fviz_cluster(k5, geom = "point",  data = data[-1]) + ggtitle("k = 5")
+
+library(gridExtra)
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+```
+
+```{r}
+set.seed(123)
+fviz_nbclust(data, kmeans, method = "wss")
+```
+
+```{r}
+fviz_nbclust(data, kmeans, method = "silhouette")
+```
+
+```{r}
+set.seed(123)
+final <- kmeans(data, 3, nstart = 25)
+print(final)
+fviz_cluster(final, data = data[-1])
+```
+

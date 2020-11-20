@@ -1,0 +1,53 @@
+---
+title: "K-Means"
+output: html_notebook
+---
+
+```{r}
+library("datasets")
+data("iris")
+summary(iris)
+```
+```{r}
+iris.new <- iris[, 1:4]
+iris.class <- iris[, "Species"]
+set.seed(1356)
+result <- kmeans(iris.new, 3)
+```
+
+```{r}
+par(mfow=c(2,2), mar=c(5,4,2,2))
+plot(iris.new[, c(1,2)], col=result$cluster)
+plot(iris.new[, c(1,2)], col=iris.class)
+plot(iris.new[, c(3,4)], col=result$cluster)
+plot(iris.new[, c(3,4)], col=iris.class)
+```
+
+```{r}
+result$tot.withinss
+```
+```{r}
+attributes(result)$names
+```
+```{r}
+iris.new$cluster <- factor(result$cluster)
+centers <- as.data.frame(result$centers)
+library(ggplot2)
+ggplot() + 
+  geom_point(data=iris.new, aes(x=Petal.Length, y=Petal.Width, color=cluster)) + 
+  geom_point(data=centers, aes(x=Petal.Length, y=Petal.Width, color="Center"), size=52, alpha=3, show.legend = FALSE)
+```
+
+CONTOH B
+```{r}
+set.seed(2)
+x <- matrix(rnorm(50*2), ncol = 2)
+x[1:25, 1] <- x[1:25, 1] + 3
+x[1:25, 2] <- x[1:25, 2] - 4
+plot(x)
+```
+```{r}
+km.out <- kmeans(x, 2)
+plot(x, col = (km.out$cluster + 1))
+```
+
